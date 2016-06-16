@@ -1,10 +1,11 @@
+Mr.p.R.s:
 package.path = package.path .. ';.luarocks/share/lua/5.2/?.lua'
   ..';.luarocks/share/lua/5.2/?/init.lua'
 package.cpath = package.cpath .. ';.luarocks/lib/lua/5.2/?.so'
 
 require("./bot/utils")
 
-VERSION = '2'
+VERSION = '1.0'
 
 -- This function is called when tg receive a msg
 function on_msg_receive (msg)
@@ -21,11 +22,7 @@ function on_msg_receive (msg)
     msg = pre_process_msg(msg)
     if msg then
       match_plugins(msg)
-      if redis:get("bot:markread") then
-        if redis:get("bot:markread") == "on" then
-          mark_read(receiver, ok_cb, false)
-        end
-      end
+  --   mark_read(receiver, ok_cb, false)
     end
   end
 end
@@ -174,7 +171,9 @@ function match_plugin(plugin, plugin_name, msg)
   end
 end
 
--- DEPRECATED, use send_large_msg(destination, text)
+-- DEPRECATED, us
+
+e send_large_msg(destination, text)
 function _send_msg(destination, text)
   send_large_msg(destination, text)
 end
@@ -208,226 +207,317 @@ function create_config( )
   -- A simple config with basic plugins and ourselves as privileged user
   config = {
     enabled_plugins = {
-    "onservice",
-    "inrealm",
+    "9gag",         
+    "channels",
+    "gnuplot",
+    "info",
+    "lyrics",
+    "Pv",
+    "sms", 
+    "txt2img",
+    "add_bot",
+    "Chat",
+    "google_image",
     "ingroup",
-    "inpm",
-    "banhammer",
-    "stats",
-    "anti_spam",
-    "owners",
-    "arabic_lock",
-    "set",
-    "get",
-    "broadcast",
-    "download_media",
-    "invite",
+    "magic8ball",
+    "qr",
+    "spammer",
+    "version",
     "all",
+    "chuck_norris",
+    "google",
+    "inpm",
+    "map",
+    "quotes",
+    "stats",
+    "Version",
+    "antilink",
+    "danbooru",
+    "inrealm",
+    "media_handler",
+    "Quran",
+    "steam",
+    "vote",
+    "anti_spam",
+    "dictionary",
+    "gps",
+    "invite",
+    "media",
+    "rae",
+    "weather",
+    "anti sticker",
+    "domaintools",
+    "isup",
+    "remind",
+    "SUDO",
+    "web_shot",
+    "antitag",
+    "download_media",
+    "isX",
+    "meme",
+    "tagall",
+    "arabic_lock",
+    "echo",
+    "hackernews",
+    "join",
+    "minecraft",
+    "roll",
+    "tex",
+    "welcome",
+    "auto_leave",
+    "eur",
+    "hello",
+    "joke",
+    "moderation",
+    "rss",
+    "wiki",
+    "banhammer",
+    "exchange",
+    "help",
     "leave_ban",
+    "mod",
+    "S2A",
+    "time",
+    "xkcd",
+    "block",
+    "expand",
+    "link__lock",
+    "onservice",
+    "torrent_search",
+    "yoda",
+    "boobs",
+    "face",
+    "id",
+    "Link Pv",
+    "owners",
+    "search_youtube",
+    "translate",
+    "youtube",
+    "broadcast",
+    "Feedback",
+    "pili",
+    "service_entergroup",
+    "trivia",
+    "bugzilla",
+    "fosh",
+    "images",
+    "location",
+    "plugins",
+    "service_template",
+    "tweet",
+    "calc",
+    "get",
+    "imdb",
+    "lock_join",
+    "set",
+    "twitter",
+    "giphy",
+    "pokedex",
+    "share_contact",
+    "danestaniha",
+    "jomlak",
     "admin"
     },
     sudo_users = {189240785},--Sudo users
     disabled_channels = {},
+    realm = {},--Realms Id
     moderation = {data = 'data/moderation.json'},
-    about_text = [[Teleseed v2 - Open Source
-An advance Administration bot based on yagop/telegram-bot 
+    about_text = [[SBSS bot 2.3
+    
+    TEST
 
-https://github.com/SEEDTEAM/TeleSeed
-
-Our team!
-Alphonse (@Iwals)
-I M /-\ N (@Imandaneshi)
-Siyanew (@Siyanew)
-Rondoozle (@Potus)
-Seyedan (@Seyedan25)
-
-Special thanks to:
-Juan Potato
-Siyanew
-Topkecleon
-Vamptacus
-
-Our channels:
-English: @TeleSeedCH
-Persian: @IranSeed
-]],
-    help_text_realm = [[
-Realm Commands:
-
-!creategroup [name]
-Create a group
-
-!createrealm [name]
-Create a realm
-
-!setname [name]
-Set realm name
-
-!setabout [group_id] [text]
-Set a group's about text
-
-!setrules [grupo_id] [text]
-Set a group's rules
-
-!lock [grupo_id] [setting]
-Lock a group's setting
-
-!unlock [grupo_id] [setting]
-Unock a group's setting
-
-!wholist
-Get a list of members in group/realm
-
-!who
-Get a file of members in group/realm
-
-!type
-Get group type
-
-!kill chat [grupo_id]
-Kick all memebers and delete group
-
-!kill realm [realm_id]
-Kick all members and delete realm
-
-!addadmin [id|username]
-Promote an admin by id OR username *Sudo only
-
-!removeadmin [id|username]
-Demote an admin by id OR username *Sudo only
-
-!list groups
-Get a list of all groups
-
-!list realms
-Get a list of all realms
-
-!log
-Get a logfile of current group or realm
-
-!broadcast [text]
-!broadcast Hello !
-Send text to all groups
-» Only sudo users can run this command
-
-!bc [group_id] [text]
-!bc 123456789 Hello !
-This command will send text to [group_id]
-
-» U can use both "/" and "!" 
-
-» Only mods, owner and admin can add bots in group
-
-» Only moderators and owner can use kick,ban,unban,newlink,link,setphoto,setname,lock,unlock,set rules,set about and settings commands
-
-» Only owner can use res,setowner,promote,demote and log commands
-
+  ♻️ You can send your Ideas and messages to Us By sending them into bots account by this command :
+   تمامی درخواست ها و همه ی انتقادات و حرفاتونو با دستور زیر بفرستین به ما
+   !feedback (your ideas and messages)
 ]],
     help_text = [[
-Commands list :
+Creed bots Help for mods : 😈
+Plugins : 🔻
 
-!kick [username|id]
-You can also do it by reply
+1. banhammer ⭕️
+Help For Banhammer👇
+دستورات حذف و کنترل گروه
 
-!ban [ username|id]
-You can also do it by reply
+!Kick @UserName 😜
+And You Can do It by Replay 🙈
+برای حذف کسی به کار میره همچنین با ریپلی هم میشه 
 
-!unban [id]
-You can also do it by reply
 
-!who
-Members list
+!Ban @UserName 〽️
+You Can Do It By Replay👌
+برای بن کردن شخصی استفاده میشه با ریپلی هم میشه 
 
-!modlist
-Moderators list
 
-!promote [username]
-Promote someone
+!Unban @UserName
+You Can Do it By Replay😱
+کسیرو آنبن میکنید و با ریپلی هم میشه
 
-!demote [username]
-Demote someone
+For Admins : 👇
 
-!kickme
-Will kick user
+!banall @UserName or (user_id)😺
+you Can do it By Replay 👤
+برای بن از تمامی گروه ها استفاده میشه
 
-!about
-Group description
+!unbanall 🆔User_Id🆔
+برای انبن کردن شخص از همه ی گروه ها 
 
-!setphoto
-Set and locks group photo
+〰〰〰〰〰〰〰〰〰〰
+2. GroupManager :🔹
 
-!setname [name]
-Set group name
+!lock leave : 🚷
+If someone leaves the group he cant come back
+اگر کسی از گروه برود نمیتواند برگردد
 
-!rules
-Group rules
+!Creategp "GroupName" 🙈
+You Can CreateGroup With this command😱
+با این دستور گروه میسازند که مخصوص ادمین ها و سازنده هست
 
-!id
-Return group id or user id
+!lock member 😋
+You Can lock Your Group Members 🔻
+با این دستور اجازه ورود به گروه رو تعیین میکنید
 
-!help
-Get commands list
+!lock bots 🔹
+No bots can come in Your gp 🕶
+از آمدن ربات به گروه جلوگیری میکنید
 
-!lock [member|name|bots|leave] 
-Locks [member|name|bots|leaveing] 
+!lock name ❤️
+no one can change your gpname💍
+اسم گروه را قفل میکنید
 
-!unlock [member|name|bots|leave]
-Unlocks [member|name|bots|leaving]
+!setflood😃
+Set the group flood control🈹
 
-!set rules [text]
-Set [text] as rules
 
-!set about [text]
-Set [text] as about
+میزان اسپم را در گروه تعیین میکنید
 
-!settings
-Returns group settings
+!settings ❌
+Watch group settings
+تنظیمات فعلی گروه را میبینید
 
-!newlink
-Create/revoke your group link
+!owner🚫
+watch group owner
+آیدی سازنده گروه رو میبینید
 
-!link
-Returns group link
+!setowner user_id❗️
+You can set someone to the group owner‼️
+برای گروه سازنده تعیین میکنید 
 
-!owner
-Returns group owner id
+!modlist💯
+watch Group mods🔆
+لیست مدیران گروه رو میبینید
 
-!setowner [id]
-Will set id as owner
+!lock fosh : 
+Lock using bad words in Group 🙊
+از دادن فحش در گروه جلوگیری میکند
 
-!setflood [value]
-Set [value] as flood sensitivity
 
-!stats
-Simple message statistics
+!lock link : 
+Lock Giving link in your group . ☑️
+از دادن لینک در گروه جلوگیری میکند
 
-!save [value] [text]
-Save [text] as [value]
 
-!get [value]
-Returns text of [value]
+!lock english : 
+Lock Speaking English in group 🆎
+از حرف زدن انگلیسی یا نوشتن انگلیسی در گروه جلوگیری کنید
 
-!clean [modlist|rules|about]
-Will clear [modlist|rules|about] and set it to nil
 
-!res [username]
-Returns user id
+!lock tag : 
+Lock Tagging in Group with # and @ symbols 📌
+از تگ کردن ای دی یا کانال یا .. جلوگیری میکند
 
-!log
-Will return group logs
+!lock flood⚠️
+lock group flood🔰
+اسپم دادن رو در گروه قدغا میکنید
 
-!banlist
-Will return group ban list
+!unlock (bots-member-flood-photo-name-Arabic)✅
+Unlock Something🚼
+همه ی موارد بالا را با این دستور آزاد میسازید
 
-» U can use both "/" and "!" 
+!rules 🆙 or !set rules🆗
+watch group rules or set
+برای دیدن قوانین گروه و یا انتخاب قوانین 
 
-» Only mods, owner and admin can add bots in group
+!about or !set about 🔴
+watch about group or set about
+در مورد توضیحات گروه میدهد و یا توضیحات گروه رو تعیین کنید 
 
-» Only moderators and owner can use kick,ban,unban,newlink,link,setphoto,setname,lock,unlock,set rules,set about and settings commands
+!res @username🔘
+See UserInfo©
+در مورد اسم و ای دی شخص بهتون میده 
 
-» Only owner can use res,setowner,promote,demote and log commands
+!who♦️
+Get Ids Chat🔺
+تمامی ای دی های موجود در چت رو بهتون میده
 
+!log 🎴
+get members id ♠️
+تمامی فعالیت های انجام یافته توسط شما و یا مدیران رو نشون میده
+
+!all🔴
+this is like stats in a file🔸
+همه ی اطلاعات گروه رو میده
+
+!newlink : 🔓
+Revokes the Invite link of Group. �
+لینک گروه رو عوض میکنه 
+
+!getlink : 💡
+Get the Group link in Group .
+لینک گروه را در گروه نمایش میده
+
+!linkpv : 🔐
+To give the invitation Link of group in Bots PV.
+برای دریافت لینک در پیوی استفاده میشه 
+〰〰〰〰〰〰〰〰
+Admins :®
+!addgp 😎
+You Can add the group to moderation.json😱
+برای آشنا کردن گروه به ربات توسط مدیران  اصلی ربات
+
+!remgp 😏
+You Can Remove the group from mod.json⭕️
+برای ناشناس کردن گروه برای ربات توسط مدیران اصلی
+
+!setgpowner (Gpid) user_id ⚫️
+from realm®®
+برای تعیین سازنده ای برای گروه 
+
+!addadmin 🔶
+set some one to global admin🔸
+برای اضافه کردن ادمین اصلی به ربات 
+
+!removeadmin🔘
+remove somone from global admin🔹
+برای حذف کردن ادمین اصلی از ربات 
+
+〰〰〰〰〰〰〰〰〰〰〰
+3. Stats :©
+!stats creedbot (sudoers)✔️
+shows bt stats🔚
+برای دیدن آمار ربات کرید
+
+!stats🔘
+shows group stats💲
+آمار گروه را نشان میده
+
+〰〰〰〰〰〰〰〰
+4. Feedback⚫️
+!feedback txt🔻◼️
+send maseage to admins via bot🔈
+برای فرستادن هر حرف و انتقاد و ... توسط ربات به مدیریت ربات
+〰〰〰〰〰〰〰〰〰〰〰
+5. Tagall◻️
+!tagall txt🔸
+will tag users©
+تگ کردن همه ی اعضای گروه و نوشتن پیام شما زیرش
+
+〰〰〰〰〰〰〰〰〰
+🔜 more plugins 
+
+You Can user both "!" & "/" for them🎧
+میتوانید از دو شکلک !  و / برای دادن دستورات استفاده کنید
 ]]
+
   }
   serialize_to_file(config, './data/config.lua')
   print('saved config into ./data/config.lua')
@@ -464,7 +554,6 @@ function load_plugins()
 
     if not ok then
       print('\27[31mError loading plugin '..v..'\27[39m')
-      print(tostring(io.popen("lua plugins/"..v..".lua"):read('*all')))
       print('\27[31m'..err..'\27[39m')
     end
 
